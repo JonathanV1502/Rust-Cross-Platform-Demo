@@ -1,0 +1,10 @@
+[package]
+name = "odd-even"
+version = "0.1.0"
+edition = "2021"
+description = "Tells you if a number is odd or even"
+license = "MIT"
+
+[profile.release]
+strip = true
+lto = true
