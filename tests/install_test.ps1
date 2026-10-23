@@ -13,7 +13,8 @@ function fail($msg) {
 
 try {
     $env:ODD_EVEN_INSTALL_DIR = $Dir
-    & .\install.ps1
+    Get-Content -Raw .\install.ps1 | Invoke-Expression
+    if ($ErrorActionPreference -ne 'Continue') { fail "install.ps1 leaked ErrorActionPreference=$ErrorActionPreference into the caller" }
 
     if (-not (Test-Path $exe)) { fail "$exe not installed" }
     if ((& $exe 5) -ne '5 is odd') { fail 'odd-even 5' }
@@ -30,7 +31,7 @@ try {
     $env:ODD_EVEN_VERSION = 'v0.0.0-nope'
     $env:ODD_EVEN_INSTALL_DIR = Join-Path $Dir 'bad'
     $failed = $false
-    try { & .\install.ps1 *> $null } catch { $failed = $true }
+    try { Get-Content -Raw .\install.ps1 | Invoke-Expression *> $null } catch { $failed = $true }
     if (-not $failed) { fail 'install of a nonexistent version succeeded' }
     $env:ODD_EVEN_BASE_URL = $saved
 
