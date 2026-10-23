@@ -5,6 +5,11 @@ REPO="JonathanV1502/Rust-Cross-Platform-Demo"
 RELEASES="https://github.com/$REPO/releases"
 VERSION="${ODD_EVEN_VERSION:-latest}"
 INSTALL_DIR="${ODD_EVEN_INSTALL_DIR:-$HOME/.local/bin}"
+if [ "$VERSION" = latest ]; then
+    BASE_URL="${ODD_EVEN_BASE_URL:-$RELEASES/latest/download}"
+else
+    BASE_URL="${ODD_EVEN_BASE_URL:-$RELEASES/download/$VERSION}"
+fi
 
 err() {
     echo "error: $*" >&2
@@ -24,15 +29,10 @@ case "$os/$arch" in
         fi
         ;;
     Linux/x86_64) target=x86_64-unknown-linux-gnu ;;
-    MINGW* | MSYS* | CYGWIN*) err "on Windows, download odd-even-x86_64-pc-windows-msvc.exe from $RELEASES" ;;
-    *) err "unsupported platform $os/$arch (supported: macOS arm64/x86_64, Linux x86_64). See $RELEASES" ;;
+    *) err "unsupported platform $os/$arch (supported: macOS arm64/x86_64, Linux x86_64; on Windows use install.ps1). See $RELEASES" ;;
 esac
 
-if [ "$VERSION" = latest ]; then
-    url="$RELEASES/latest/download/odd-even-$target"
-else
-    url="$RELEASES/download/$VERSION/odd-even-$target"
-fi
+url="$BASE_URL/odd-even-$target"
 
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
