@@ -23,8 +23,10 @@ curl -fsSL https://raw.githubusercontent.com/JonathanV1502/Rust-Cross-Platform-D
 **Windows (PowerShell)**
 
 ```powershell
-powershell -c "irm https://raw.githubusercontent.com/JonathanV1502/Rust-Cross-Platform-Demo/main/install.ps1 | iex"
+irm https://raw.githubusercontent.com/JonathanV1502/Rust-Cross-Platform-Demo/main/install.ps1 | iex
 ```
+
+From cmd.exe, wrap it: `powershell -c "irm https://raw.githubusercontent.com/JonathanV1502/Rust-Cross-Platform-Demo/main/install.ps1 | iex"`
 
 This installs `odd-even` to `~/.local/bin` on macOS/Linux, or `%LOCALAPPDATA%\Programs\odd-even` on Windows (added to your PATH; open a new terminal afterwards). Linux needs glibc 2.34+ (Ubuntu 22.04+, Debian 12+, Fedora 35+).
 
