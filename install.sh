@@ -1,7 +1,4 @@
 #!/bin/sh
-# Installs the odd-even binary from GitHub Releases.
-#   curl -fsSL https://raw.githubusercontent.com/JonathanV1502/Rust-Cross-Platform-Demo/main/install.sh | sh
-# Env: ODD_EVEN_VERSION (default: latest), ODD_EVEN_INSTALL_DIR (default: ~/.local/bin)
 set -eu
 
 REPO="JonathanV1502/Rust-Cross-Platform-Demo"
@@ -19,7 +16,7 @@ arch=$(uname -m)
 case "$os/$arch" in
     Darwin/arm64) target=aarch64-apple-darwin ;;
     Darwin/x86_64)
-        # An Intel shell under Rosetta on Apple Silicon still reports x86_64.
+        # Rosetta shells report x86_64 on Apple Silicon.
         if [ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" = 1 ]; then
             target=aarch64-apple-darwin
         else
@@ -41,7 +38,6 @@ tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
 
 echo "Downloading $url"
-# curl/wget don't set macOS's quarantine flag, so Gatekeeper won't block the unsigned binary.
 if command -v curl >/dev/null 2>&1; then
     curl -fsSL -o "$tmp" "$url" || err "download failed (does release '$VERSION' exist?)"
 elif command -v wget >/dev/null 2>&1; then
